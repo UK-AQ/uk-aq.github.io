@@ -1,0 +1,1281 @@
+/* Permanent shared UK AQ presentation refinements.
+ * These rules must remain when the beta notice is retired.
+ */
+
+/* Shared artwork-backed page titles, aligned with the Hex Map/News title area. */
+.ukaq-page-title-heading {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  min-height: 92px;
+  margin: 0;
+  padding-right: 132px;
+}
+
+.ukaq-page-title-text {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.ukaq-page-title-picture {
+  display: block;
+  max-width: 100%;
+}
+
+.ukaq-page-title-image {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: 50.4px;
+  object-fit: contain;
+  object-position: left center;
+}
+
+@media (max-width: 767px) {
+  .ukaq-page-title-heading {
+    min-height: 44px;
+    padding: 0 60px 0 52px;
+  }
+
+  .ukaq-page-title-image {
+    width: auto;
+    height: auto;
+    max-height: 42px;
+  }
+
+  body[data-page-slug="who-guidelines"] #ukaq-home-logo,
+  body[data-page-slug="naei-data"] #ukaq-home-logo,
+  body[data-page-slug="wood-burning"] #ukaq-home-logo,
+  body[data-page-slug="research"] #ukaq-home-logo {
+    top: 16px;
+    right: 12px;
+  }
+
+  body[data-page-slug="who-guidelines"] #ukaq-home-logo img,
+  body[data-page-slug="naei-data"] #ukaq-home-logo img,
+  body[data-page-slug="wood-burning"] #ukaq-home-logo img,
+  body[data-page-slug="research"] #ukaq-home-logo img {
+    width: clamp(44px, 13.333vw, 52px);
+    height: auto;
+  }
+}
+
+/* Keep the existing Hex Map coverage animation but round the visible fill end. */
+.hex-map-page .map-summary-coverage-fill {
+  border-radius: inherit;
+}
+
+/* Make the WHO guideline heading read as a proper title on desktop and mobile. */
+.home-page .who-card-footer {
+  background: #fff;
+}
+
+.home-page .who-guideline-table-v2 thead th {
+  background: #edf6fd;
+}
+
+.home-page .who-guideline-heading-v2 strong {
+  font-size: clamp(1.05rem, 1.3vw, 1.18rem);
+  font-weight: 800;
+}
+
+.home-page .who-guideline-unit-v2 {
+  color: inherit;
+  font-size: 1em;
+  font-weight: 800;
+}
+
+/* Match the Hex Map chart selector's centred 1 glyph while preserving the
+   existing rounded-square network action shape. */
+.home-page .home-network-picker-action-icon--clear-all::before,
+.hex-map-page .network-dropdown-action-icon--clear-all::before {
+  content: "1";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.home-page .home-network-picker-action-icon--clear-all::before {
+  color: #3C78AC;
+}
+
+.hex-map-page .network-dropdown-action-icon--clear-all::before {
+  color: var(--accent);
+}
+
+.home-page .home-network-picker-action:disabled .home-network-picker-action-icon--clear-all::before {
+  color: #9aa2a9;
+}
+
+.hex-map-page .network-dropdown-action:disabled .network-dropdown-action-icon--clear-all::before {
+  color: var(--ink-4);
+}
+
+/* Responsive highest-reading circles: below desktop width the three changing
+   metadata lines share one fixed slot, leaving pollutant/value/unit stable. */
+.home-page .pollutant-circle.pollutant-meta-cycle {
+  grid-template-rows: auto auto auto minmax(2.9rem, 1fr);
+}
+
+.home-page .pollutant-meta-cycle .pollutant-name {
+  grid-row: 1;
+}
+
+.home-page .pollutant-meta-cycle .pollutant-value-slot {
+  grid-row: 2;
+}
+
+.home-page .pollutant-meta-cycle .pollutant-unit {
+  grid-row: 3;
+}
+
+.home-page .pollutant-meta-cycle .pollutant-observed,
+.home-page .pollutant-meta-cycle .pollutant-station,
+.home-page .pollutant-meta-cycle .pollutant-network {
+  grid-row: 4;
+  grid-column: 1;
+  width: 88%;
+  min-height: 0;
+  max-height: 2.7em;
+  margin: 0;
+  top: 0;
+  align-self: center;
+  justify-self: center;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.28s ease, transform 0.28s ease;
+}
+
+.home-page .pollutant-meta-cycle .pollutant-observed {
+  display: block;
+  padding: 0;
+  white-space: normal;
+}
+
+.home-page .pollutant-meta-cycle .pollutant-observed[hidden] {
+  display: none;
+}
+
+.home-page .pollutant-meta-cycle .pollutant-station {
+  display: flex;
+  white-space: normal;
+  overflow-wrap: normal;
+  word-break: normal;
+  text-align: center;
+}
+
+.home-page .pollutant-meta-cycle .pollutant-network {
+  transform: translateY(8px);
+}
+
+.home-page .pollutant-meta-cycle .is-meta-current {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.home-page .pollutant-meta-cycle .is-meta-leaving {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+.home-page .pollutant-circle.pollutant-meta-static {
+  grid-template-rows: auto auto auto auto auto auto;
+}
+
+.home-page .pollutant-meta-static .pollutant-observed,
+.home-page .pollutant-meta-static .pollutant-station,
+.home-page .pollutant-meta-static .pollutant-network {
+  position: relative;
+  top: 0;
+  width: 90%;
+  min-height: 0;
+  max-height: none;
+  margin: 0;
+  transform: none;
+  font-size: 0.68rem;
+  line-height: 1.08;
+}
+
+.home-page .pollutant-meta-static .pollutant-observed {
+  grid-row: 4;
+  padding-top: 0.15rem;
+  white-space: normal;
+}
+
+.home-page .pollutant-meta-static .pollutant-station {
+  grid-row: 5;
+}
+
+.home-page .pollutant-meta-static .pollutant-network {
+  grid-row: 6;
+}
+
+@media (min-width: 768px) and (max-width: 1079px) {
+  .home-page .pollutant-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: clamp(0.55rem, 1.25vw, 0.9rem);
+  }
+
+  .home-page .pollutant-circle {
+    width: min(100%, clamp(205px, calc(69px + 17.7vw), 260px));
+    padding: 0.92rem 1rem 0.72rem;
+  }
+
+  .home-page .pollutant-name {
+    font-size: clamp(1.12rem, 1.8vw, 1.4rem);
+  }
+
+  .home-page .pollutant-value-slot {
+    height: clamp(3.05rem, 5.1vw, 4.15rem);
+    margin-top: 0.68rem;
+  }
+
+  .home-page .pollutant-value {
+    font-size: clamp(3.15rem, 5.7vw, 4.65rem);
+  }
+
+  .home-page .pollutant-unit {
+    margin-top: 0.22rem;
+    font-size: 0.86rem;
+  }
+
+  .home-page .pollutant-meta-cycle .pollutant-observed,
+  .home-page .pollutant-meta-cycle .pollutant-station,
+  .home-page .pollutant-meta-cycle .pollutant-network {
+    font-size: clamp(0.7rem, 1.15vw, 0.84rem);
+    line-height: 1.12;
+  }
+
+  .home-page .pollutant-meta-cycle .pollutant-station {
+    font-weight: 800;
+  }
+}
+
+/* On wide screens, use the WHO reference card width for useful content rather
+   than stretching three table columns across the full card. */
+@media (min-width: 981px) {
+  .home-page .who-guideline-reference-v2 {
+    grid-template-columns: minmax(0, 1.1fr) minmax(420px, 0.9fr);
+    grid-template-areas:
+      "heading table"
+      "note table";
+    column-gap: clamp(1.25rem, 3vw, 2.5rem);
+    row-gap: 0.55rem;
+    align-items: start;
+  }
+
+  .home-page .who-guideline-heading-v2 {
+    grid-area: heading;
+  }
+
+  .home-page .who-guideline-table-v2 {
+    grid-area: table;
+    align-self: start;
+  }
+
+  .home-page .who-guideline-note-v2 {
+    grid-area: note;
+    align-self: start;
+  }
+}
+
+@media (max-width: 767px) {
+  /* Two-across pollutant circles on phones, with the third centred beneath. */
+  .home-page .pollutant-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 0.65rem;
+    row-gap: 1rem;
+  }
+
+  .home-page .pollutant-item {
+    gap: 0.55rem;
+  }
+
+  .home-page .pollutant-item[data-pollutant="no2"] {
+    grid-column: 1 / -1;
+    width: calc((100% - 0.65rem) / 2);
+    justify-self: center;
+  }
+
+  .home-page .pollutant-circle {
+    width: min(100%, 220px);
+    padding: 0.72rem 0.52rem 0.54rem;
+    box-shadow: 0 10px 20px rgba(56, 42, 30, 0.18);
+  }
+
+  .home-page .pollutant-circle.pollutant-meta-cycle {
+    grid-template-rows: auto auto auto minmax(2.45rem, 1fr);
+  }
+
+  .home-page .pollutant-name {
+    margin-top: 0.08rem;
+    font-size: clamp(0.98rem, 4.4vw, 1.2rem);
+  }
+
+  .home-page .pollutant-value-slot {
+    height: clamp(2.15rem, 10vw, 3.05rem);
+    margin-top: 0.42rem;
+  }
+
+  .home-page .pollutant-value {
+    font-size: clamp(2.05rem, 10.2vw, 3.15rem);
+    line-height: 0.92;
+  }
+
+  .home-page .pollutant-unit {
+    margin-top: 0.12rem;
+    font-size: clamp(0.65rem, 2.9vw, 0.78rem);
+  }
+
+  .home-page .pollutant-meta-cycle .pollutant-observed,
+  .home-page .pollutant-meta-cycle .pollutant-station,
+  .home-page .pollutant-meta-cycle .pollutant-network {
+    width: 92%;
+    max-height: 2.45em;
+    font-size: clamp(0.62rem, 2.75vw, 0.75rem);
+    line-height: 1.08;
+  }
+
+  .home-page .pollutant-meta-cycle .pollutant-station {
+    font-weight: 800;
+  }
+
+  .home-page .scale-legend {
+    width: 100%;
+    max-width: 220px;
+  }
+
+  .home-page .scale-stripe-row {
+    grid-template-columns: 1.35rem minmax(0, 1fr) 2.15rem;
+    column-gap: 0.22rem;
+  }
+
+  .home-page .scale-stripe-endpoint {
+    font-size: 0.66rem;
+  }
+
+  .home-page .scale-stripe-labels {
+    font-size: 0.58rem;
+  }
+
+  /* The existing semantic tables remain the source of truth. On mobile their
+     rows are presented as cards instead of forcing horizontal scrolling. */
+  .home-page .dashboard-table-card .dashboard-table-wrap {
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    -webkit-overflow-scrolling: auto;
+    overscroll-behavior-x: auto;
+    touch-action: auto;
+  }
+
+  .home-page .dashboard-table {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    font-size: 0.86rem;
+  }
+
+  .home-page .dashboard-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .home-page .dashboard-table tbody {
+    display: grid;
+    gap: 0.78rem;
+    width: 100%;
+  }
+
+  .home-page .dashboard-table tbody tr {
+    overflow: hidden;
+    border: 1px solid #e3d7ca;
+    border-radius: 13px;
+    background: #fff;
+  }
+
+  .home-page .dashboard-table tbody th,
+  .home-page .dashboard-table tbody td {
+    box-sizing: border-box;
+  }
+
+  .home-page .dashboard-table tbody th[scope="row"] {
+    display: block;
+    padding: 0.68rem 0.76rem;
+    border: 0;
+    background: #edf6fd;
+    color: #24384b;
+    font-size: 0.9rem;
+    font-weight: 850;
+    text-align: left;
+  }
+
+  .home-page .dashboard-table--areas tbody tr {
+    display: grid;
+    width: 100%;
+  }
+
+  .home-page .dashboard-table--areas tbody td {
+    display: grid;
+    grid-template-columns: 3.05rem minmax(0, 1fr) max-content;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.62rem 0.72rem;
+    border: 0;
+    border-top: 1px solid #ece5dc;
+  }
+
+  .home-page .dashboard-table--areas tbody td::before {
+    grid-column: 1;
+    color: #526273;
+    font-weight: 850;
+    white-space: nowrap;
+  }
+
+  .home-page .dashboard-table--areas tbody td:nth-child(2)::before {
+    content: "PM2.5";
+  }
+
+  .home-page .dashboard-table--areas tbody td:nth-child(3)::before {
+    content: "PM10";
+  }
+
+  .home-page .dashboard-table--areas tbody td:nth-child(4)::before {
+    content: "NO₂";
+  }
+
+  .home-page .dashboard-table--areas .area-reading {
+    display: contents;
+  }
+
+  .home-page .dashboard-table--areas .area-reading-name {
+    grid-column: 2;
+    min-width: 0;
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+
+  .home-page .dashboard-table--areas .area-reading-metric {
+    grid-column: 3;
+    justify-self: end;
+    gap: 0.28rem;
+  }
+
+  .home-page .dashboard-table--areas .area-marker {
+    width: 0.9rem;
+    height: 1.04rem;
+    flex-basis: 0.9rem;
+  }
+
+  .home-page .dashboard-table--areas .area-reading-value {
+    font-size: 0.8rem;
+  }
+
+  .home-page .dashboard-table--networks tbody tr {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .home-page .dashboard-table--networks tbody th[scope="row"] {
+    grid-column: 1 / -1;
+    border-right: 0;
+  }
+
+  .home-page .dashboard-table--networks tbody td {
+    border: 0;
+    text-align: center;
+  }
+
+  .home-page .dashboard-table--networks tbody td:nth-child(2) {
+    grid-column: 1 / -1;
+    padding: 0.48rem 0.72rem;
+    border-top: 1px solid #ece5dc;
+    color: #65717d;
+    font-size: 0.72rem;
+    text-align: left;
+  }
+
+  .home-page .dashboard-table--networks tbody td:nth-child(2)::before {
+    content: "Last observed: ";
+    font-weight: 750;
+  }
+
+  .home-page .dashboard-table--networks tbody td:nth-child(n + 3) {
+    padding: 0.56rem 0.4rem 0.66rem;
+    border-top: 1px solid #ece5dc;
+    border-left: 0;
+    font-size: 0.9rem;
+    font-weight: 800;
+  }
+
+  .home-page .dashboard-table--networks tbody td:nth-child(n + 4) {
+    border-left: 1px solid #ece5dc;
+  }
+
+  .home-page .dashboard-table--networks tbody td:nth-child(n + 3)::before {
+    display: block;
+    margin-bottom: 0.18rem;
+    color: #65717d;
+    font-size: 0.68rem;
+    font-weight: 800;
+  }
+
+  .home-page .dashboard-table--networks tbody td:nth-child(3)::before {
+    content: "PM2.5";
+  }
+
+  .home-page .dashboard-table--networks tbody td:nth-child(4)::before {
+    content: "PM10";
+  }
+
+  .home-page .dashboard-table--networks tbody td:nth-child(5)::before {
+    content: "NO₂";
+  }
+
+  .home-page .dashboard-table--networks tbody tr[data-network="total"] {
+    background: #fffaf3;
+  }
+
+  .home-page .dashboard-table--networks tbody tr[data-network="total"] th[scope="row"] {
+    background: #f5eadf;
+  }
+}
+
+/* TEST tuning after responsive review: use a compact four-row stack inside
+   each circle so name, value, unit and rotating metadata stay grouped. */
+@media (max-width: 1079px) {
+  .home-page .pollutant-circle.pollutant-meta-cycle {
+    position: relative;
+    grid-template-rows: auto auto auto auto;
+    align-content: start;
+  }
+
+  .home-page .pollutant-meta-cycle .pollutant-name {
+    grid-row: 1;
+    margin-top: 0.22rem;
+  }
+
+  .home-page .pollutant-meta-cycle .pollutant-value-slot {
+    grid-row: 2;
+    top: 0;
+    height: auto;
+    margin-top: 0.5rem;
+    align-self: auto;
+  }
+
+  .home-page .pollutant-meta-cycle .pollutant-unit {
+    grid-row: 3;
+    top: 0;
+    margin-top: 0.08rem;
+    align-self: auto;
+  }
+
+  .home-page .pollutant-meta-cycle .pollutant-observed,
+  .home-page .pollutant-meta-cycle .pollutant-station,
+  .home-page .pollutant-meta-cycle .pollutant-network {
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    grid-row: 4;
+    grid-column: 1;
+    width: 88%;
+    max-height: 2.25em;
+    margin-top: 0.22rem;
+    align-self: start;
+    justify-self: center;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1079px) {
+  .home-page .pollutant-circle {
+    width: min(100%, clamp(185px, calc(62px + 15.2vw), 230px));
+    padding: 0.62rem 0.82rem 0.5rem;
+  }
+
+  .home-page .pollutant-meta-cycle .pollutant-value-slot {
+    margin-top: 0.74rem;
+  }
+
+  .home-page .pollutant-meta-cycle .pollutant-observed,
+  .home-page .pollutant-meta-cycle .pollutant-station,
+  .home-page .pollutant-meta-cycle .pollutant-network {
+    margin-top: 0.38rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .home-page .pollutant-circle {
+    width: min(100%, 160px);
+    padding: 0.78rem 0.3rem 0.18rem;
+  }
+
+  /* Keep the compact-circle typography tied to the 160px circle rather than
+     viewport width, so a narrow desktop browser matches a real phone. */
+  .home-page .pollutant-name {
+    font-size: 1.07rem;
+  }
+
+  .home-page .pollutant-value {
+    font-size: 2.5rem;
+  }
+
+  .home-page .pollutant-unit {
+    font-size: 0.71rem;
+  }
+
+  .home-page .pollutant-meta-cycle .pollutant-observed,
+  .home-page .pollutant-meta-cycle .pollutant-station,
+  .home-page .pollutant-meta-cycle .pollutant-network {
+    font-size: 0.68rem;
+  }
+
+  .home-page .pollutant-meta-cycle .pollutant-name {
+    margin-top: 0.12rem;
+  }
+
+  .home-page .pollutant-meta-cycle .pollutant-value-slot {
+    margin-top: 0.34rem;
+  }
+
+  .home-page .pollutant-meta-cycle .pollutant-unit {
+    margin-top: 0.04rem;
+  }
+
+  .home-page .pollutant-meta-cycle .pollutant-observed,
+  .home-page .pollutant-meta-cycle .pollutant-station,
+  .home-page .pollutant-meta-cycle .pollutant-network {
+    width: 86%;
+    max-height: 2.1em;
+    margin-top: 0.34rem;
+  }
+
+  .home-page .scale-legend {
+    max-width: 175px;
+  }
+}
+
+/* Medium-width final positioning pass after TEST visual review. */
+@media (min-width: 768px) and (max-width: 1079px) {
+  .home-page .pollutant-circle {
+    padding: 0.76rem 0.82rem 0.36rem;
+  }
+
+  .home-page .pollutant-meta-cycle .pollutant-name {
+    margin-top: 0.3rem;
+    font-size: clamp(1.2rem, 2vw, 1.48rem);
+  }
+
+  .home-page .pollutant-meta-cycle .pollutant-value-slot {
+    margin-top: 0.86rem;
+  }
+
+  .home-page .pollutant-meta-cycle .pollutant-unit {
+    margin-top: 0.1rem;
+  }
+
+  .home-page .pollutant-meta-cycle .pollutant-observed,
+  .home-page .pollutant-meta-cycle .pollutant-station,
+  .home-page .pollutant-meta-cycle .pollutant-network {
+    width: 80%;
+    max-height: 2.3em;
+    margin-top: 0.52rem;
+    font-size: clamp(0.74rem, 1.25vw, 0.88rem);
+  }
+}
+
+/* Let an inactive message use the full centre of the circle instead of the
+   numeric value row while the pollutant name remains at the top. */
+.home-page .pollutant-circle.pollutant-circle--inactive {
+  grid-template-rows: auto minmax(0, 1fr);
+  align-content: stretch;
+}
+
+.home-page .pollutant-circle--inactive .pollutant-value-slot {
+  grid-row: 2;
+  min-height: 0;
+  height: auto;
+  margin-top: 0;
+  top: 0;
+  align-self: stretch;
+}
+
+.home-page .pollutant-circle--inactive .pollutant-value {
+  max-width: 92%;
+  font-size: clamp(1.2rem, 2.2vw, 1.55rem);
+  line-height: 1.18;
+  white-space: normal;
+}
+
+.home-page .pollutant-circle--inactive .pollutant-observed,
+.home-page .pollutant-circle--inactive .pollutant-station,
+.home-page .pollutant-circle--inactive .pollutant-network {
+  display: none !important;
+}
+
+/* Compensate for the wider right-hand legend endpoint labels at responsive widths. */
+@media (min-width: 768px) and (max-width: 1079px) {
+  .home-page .scale-legend {
+    transform: translateX(5px);
+  }
+}
+
+@media (max-width: 767px) {
+  .home-page .scale-legend {
+    transform: translateX(4px);
+  }
+}
+
+/* On narrow tablet/desktop tables, let Area type wrap so the three pollutant
+   columns keep equal, usable widths instead of forcing NO2 off the right edge. */
+@media (min-width: 768px) {
+  body.home-page .dashboard-table--areas {
+    min-width: 0 !important;
+  }
+
+  body.home-page .dashboard-table--areas .dashboard-table-area-type-col {
+    width: min(var(--area-type-col-width, 220px), 24%) !important;
+  }
+
+  body.home-page .dashboard-table--areas thead th:first-child,
+  body.home-page .dashboard-table--areas tbody th[scope="row"] {
+    white-space: normal !important;
+    overflow-wrap: normal;
+    word-break: normal;
+    line-height: 1.15;
+  }
+}
+
+/* Restore the normal brown dashboard tables below 768px. Keep the genuine
+   table structure and allow horizontal scrolling for this first mobile pass. */
+@media (max-width: 767px) {
+  body.home-page .dashboard-table-card .dashboard-table-wrap {
+    overflow-x: auto;
+    overflow-y: hidden;
+    border: 1px solid #e3d7ca;
+    border-radius: 13px;
+    background: #fffdfa;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x pan-y;
+  }
+
+  body.home-page .dashboard-table {
+    display: table;
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: separate;
+    font-size: 0.86rem;
+  }
+
+  body.home-page .dashboard-table--areas {
+    min-width: 760px;
+  }
+
+  body.home-page .dashboard-table--networks {
+    min-width: 680px;
+  }
+
+  body.home-page .dashboard-table thead {
+    position: static;
+    display: table-header-group;
+    width: auto;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+    border: 0;
+  }
+
+  body.home-page .dashboard-table tbody {
+    display: table-row-group;
+    width: auto;
+  }
+
+  body.home-page .dashboard-table thead tr,
+  body.home-page .dashboard-table tbody tr,
+  body.home-page .dashboard-table--areas tbody tr,
+  body.home-page .dashboard-table--networks tbody tr {
+    display: table-row;
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    background: #fff;
+  }
+
+  body.home-page .dashboard-table th,
+  body.home-page .dashboard-table td,
+  body.home-page .dashboard-table tbody th[scope="row"],
+  body.home-page .dashboard-table--areas tbody td,
+  body.home-page .dashboard-table--networks tbody td {
+    display: table-cell;
+    box-sizing: border-box;
+    padding: 0.75rem 0.8rem;
+    border-bottom: 1px solid #ded2c4;
+    background: inherit;
+    color: #172535;
+    font-size: inherit;
+    vertical-align: middle;
+  }
+
+  body.home-page .dashboard-table thead th {
+    background: #eee5da;
+    color: #263747;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+
+  body.home-page .dashboard-table tbody th[scope="row"] {
+    font-weight: 750;
+    text-align: left;
+  }
+
+  body.home-page .dashboard-table tbody tr:last-child th,
+  body.home-page .dashboard-table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  body.home-page .dashboard-table--areas tbody td::before,
+  body.home-page .dashboard-table--networks tbody td::before {
+    display: none !important;
+    content: none !important;
+  }
+
+  body.home-page .dashboard-table--areas .area-reading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) max-content;
+    align-items: center;
+    column-gap: 0.6rem;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  body.home-page .dashboard-table--areas .area-reading-name {
+    grid-column: auto;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    font-size: inherit;
+  }
+
+  body.home-page .dashboard-table--areas .area-reading-metric {
+    grid-column: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-self: end;
+    gap: 0.35rem;
+    white-space: nowrap;
+  }
+
+  body.home-page .dashboard-table--areas .area-marker {
+    width: 1.17rem;
+    height: 1.35rem;
+    flex: 0 0 1.17rem;
+  }
+
+  body.home-page .dashboard-table--areas .area-reading-value {
+    font-size: inherit;
+  }
+
+  body.home-page .dashboard-table--areas th:first-child,
+  body.home-page .dashboard-table--areas td:first-child {
+    border-right: 1px solid rgba(30, 42, 51, 0.12);
+  }
+
+  body.home-page .dashboard-table--areas th + th,
+  body.home-page .dashboard-table--areas td + td {
+    border-left: 1px solid rgba(30, 42, 51, 0.06);
+  }
+
+  body.home-page .dashboard-table--areas th:nth-child(2),
+  body.home-page .dashboard-table--areas td:nth-child(2) {
+    border-left: 0;
+  }
+
+  body.home-page .dashboard-table--networks tbody tr[data-network="total"] {
+    background: #eee5da;
+  }
+
+  body.home-page .dashboard-table--networks tbody tr[data-network="total"] th[scope="row"] {
+    background: inherit;
+  }
+
+  body.home-page .dashboard-table--networks th:not(:first-child),
+  body.home-page .dashboard-table--networks td:not(:first-child) {
+    text-align: center;
+  }
+
+  body.home-page .dashboard-table--networks th:nth-child(2),
+  body.home-page .dashboard-table--networks td:nth-child(2) {
+    grid-column: auto;
+    padding: 0.75rem 0.8rem;
+    border-top: 0;
+    color: #172535;
+    font-size: inherit;
+    text-align: left;
+  }
+
+  body.home-page .dashboard-table--networks td:nth-child(n + 3) {
+    padding: 0.75rem 0.8rem;
+    border-top: 0;
+    font-size: inherit;
+    font-weight: 700;
+  }
+
+  body.home-page .dashboard-table--networks th:first-child,
+  body.home-page .dashboard-table--networks td:first-child {
+    border-right: 1px solid rgba(30, 42, 51, 0.12);
+  }
+
+  body.home-page .dashboard-table--networks th:nth-child(n + 3),
+  body.home-page .dashboard-table--networks td:nth-child(n + 3) {
+    border-left: 1px solid rgba(30, 42, 51, 0.08);
+  }
+
+  body.home-page .dashboard-table--networks tbody tr:last-child th:first-child {
+    border-right: 0;
+  }
+}
+
+body.home-page .dashboard-table--areas {
+  width: 100%;
+  min-width: 0 !important;
+  table-layout: fixed;
+  --area-group-border: #a9adb1;
+  --area-metric-marker-width: 1.17rem;
+  --area-metric-marker-height: 1.35rem;
+  --area-metric-gap: 0.35rem;
+  --area-metric-value-track: 6.4rem;
+  --area-metric-font-size: 100%;
+}
+
+body.home-page .dashboard-table--areas .dashboard-table-area-type-col {
+  width: 24% !important;
+}
+
+body.home-page .dashboard-table--areas col:not(.dashboard-table-area-type-col) {
+  width: 25.333333% !important;
+}
+
+body.home-page .dashboard-table--areas thead th:first-child,
+body.home-page .dashboard-table--areas tbody tr[data-area-type] > th:first-child {
+  white-space: normal;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+/* Side-by-side mode: preserve fixed marker and value tracks so content length
+   cannot move corresponding markers or value starts between area rows. */
+body.home-page .dashboard-table--areas .area-reading {
+  display: grid;
+  width: 100%;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 0.35rem;
+  min-width: 0;
+}
+
+body.home-page .dashboard-table--areas .area-reading-name {
+  grid-column: 1;
+  min-width: 0;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+}
+
+body.home-page .dashboard-table--areas .area-reading-metric {
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: var(--area-metric-marker-width) var(--area-metric-value-track);
+  align-items: center;
+  justify-self: end;
+  column-gap: var(--area-metric-gap);
+  min-width: 0;
+  white-space: nowrap;
+}
+
+body.home-page .dashboard-table--areas .area-marker {
+  grid-column: 1;
+  width: var(--area-metric-marker-width);
+  height: var(--area-metric-marker-height);
+  flex: 0 0 var(--area-metric-marker-width);
+  justify-self: start;
+}
+
+body.home-page .dashboard-table--areas .area-reading-value {
+  grid-column: 2;
+  display: inline-flex;
+  align-items: baseline;
+  justify-self: start;
+  gap: 0.25em;
+  font-size: var(--area-metric-font-size);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+body.home-page .dashboard-table--areas .area-reading-number,
+body.home-page .dashboard-table--areas .area-reading-unit {
+  white-space: nowrap;
+}
+
+/* The controller enables stacked mode only after rendered side-by-side content
+   no longer fits. All pollutant cells switch together. */
+body.home-page .dashboard-table--areas.area-table--stacked .area-reading {
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 0.28rem;
+  column-gap: 0;
+}
+
+body.home-page .dashboard-table--areas.area-table--stacked .area-reading-name {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+body.home-page .dashboard-table--areas.area-table--stacked .area-reading-metric {
+  grid-column: 1;
+  grid-row: 2;
+  display: inline-flex;
+  width: max-content;
+  max-width: 100%;
+  align-items: center;
+  justify-self: start;
+  gap: var(--area-metric-gap);
+  white-space: nowrap;
+}
+
+body.home-page .dashboard-table--areas.area-table--stacked .area-marker,
+body.home-page .dashboard-table--areas.area-table--stacked .area-reading-value {
+  grid-column: auto;
+  justify-self: auto;
+}
+
+body.home-page .dashboard-table--areas.area-table--grouped tbody tr[data-area-type] .area-reading {
+  align-items: start;
+}
+
+body.home-page .dashboard-table--areas.area-table--grouped tbody tr[data-area-type] .area-reading-name {
+  align-self: start;
+  min-height: var(--area-reading-name-row-height, 0);
+}
+
+body.home-page .dashboard-table--areas.area-table--grouped tbody tr[data-area-type] .area-reading-metric {
+  align-self: end;
+}
+
+/* Grouped narrow-fit stages are applied only after normal grouped layout has
+   been measured. Spacing is reduced before the shared metric presentation. */
+body.home-page .dashboard-table--areas.area-table--grouped.area-table--compact {
+  --area-metric-gap: 0.22rem;
+}
+
+body.home-page .dashboard-table--areas.area-table--grouped.area-table--compact tbody tr[data-area-type] > td {
+  padding-inline: 0.38rem;
+}
+
+body.home-page .dashboard-table--areas.area-table--grouped.area-table--metric-split .area-reading-metric {
+  display: grid;
+  grid-template-columns: var(--area-metric-marker-width) max-content;
+  grid-template-rows: auto;
+  align-items: start;
+  justify-self: start;
+  column-gap: var(--area-metric-gap);
+  row-gap: 0;
+  width: max-content;
+  max-width: 100%;
+}
+
+body.home-page .dashboard-table--areas.area-table--grouped.area-table--metric-split .area-marker {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: start;
+}
+
+body.home-page .dashboard-table--areas.area-table--grouped.area-table--metric-split .area-reading-value {
+  grid-column: 2;
+  grid-row: 1;
+  display: grid;
+  grid-template-columns: max-content;
+  grid-template-rows: auto auto;
+  align-items: start;
+  justify-self: start;
+  gap: 0;
+}
+
+body.home-page .dashboard-table--areas.area-table--grouped.area-table--metric-split .area-reading-number {
+  grid-row: 1;
+}
+
+body.home-page .dashboard-table--areas.area-table--grouped.area-table--metric-split .area-reading-unit {
+  grid-row: 2;
+  font-size: 78%;
+  line-height: 1.05;
+}
+
+body.home-page .dashboard-table--areas.area-table--grouped.area-table--metric-90 {
+  --area-metric-marker-width: 1.053rem;
+  --area-metric-marker-height: 1.215rem;
+  --area-metric-gap: 0.198rem;
+  --area-metric-value-track: 5.76rem;
+  --area-metric-font-size: 90%;
+}
+
+body.home-page .dashboard-table--areas.area-table--grouped.area-table--metric-85 {
+  --area-metric-marker-width: 0.995rem;
+  --area-metric-marker-height: 1.148rem;
+  --area-metric-gap: 0.187rem;
+  --area-metric-value-track: 5.44rem;
+  --area-metric-font-size: 85%;
+}
+
+body.home-page .dashboard-table--areas.area-table--grouped.area-table--metric-80 {
+  --area-metric-marker-width: 0.936rem;
+  --area-metric-marker-height: 1.08rem;
+  --area-metric-gap: 0.176rem;
+  --area-metric-value-track: 5.12rem;
+  --area-metric-font-size: 80%;
+}
+
+/* Grouped five-row fallback. JavaScript enables this when any area-type word,
+   normal-size area-name word, or complete marker/value-unit line cannot fit in
+   the resolved standard layout. */
+body.home-page .dashboard-table--areas .area-reading-group-row {
+  display: none;
+}
+
+body.home-page .dashboard-table--areas.area-table--grouped .dashboard-table-area-type-col {
+  width: 0 !important;
+  visibility: collapse;
+}
+
+body.home-page .dashboard-table--areas.area-table--grouped col:not(.dashboard-table-area-type-col) {
+  width: 33.333333% !important;
+}
+
+body.home-page .dashboard-table--areas.area-table--grouped thead th:first-child,
+body.home-page .dashboard-table--areas.area-table--grouped tbody tr[data-area-type] > th:first-child {
+  display: table-cell !important;
+  width: 0 !important;
+  min-width: 0 !important;
+  max-width: 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
+  border: 0 !important;
+  visibility: hidden;
+  font-size: 0;
+  line-height: 0;
+  white-space: nowrap;
+}
+
+body.home-page .dashboard-table--areas.area-table--grouped thead th {
+  border-radius: 0;
+}
+
+body.home-page .dashboard-table--areas.area-table--grouped thead th:nth-child(2) {
+  border-left: 0 !important;
+}
+
+body.home-page .dashboard-table--areas.area-table--grouped .area-reading-group-row {
+  display: table-row;
+}
+
+body.home-page .dashboard-table--areas.area-table--grouped .area-reading-group-row > th {
+  display: table-cell;
+  padding: 0.55rem 0.65rem;
+  border-top: 0;
+  border-right: 0;
+  border-bottom: 1px solid #ded2c4;
+  border-left: 0;
+  background: #fff;
+  color: #172535;
+  font-size: inherit;
+  font-weight: 800;
+  line-height: 1.15;
+  text-align: left;
+  white-space: normal;
+}
+
+/* The Local Authorities heading solely owns the separator between groups.
+   Data rows do not add outer side or bottom edges over the wrapper perimeter. */
+body.home-page .dashboard-table--areas.area-table--grouped tbody tr[data-area-type="pcon"] > td {
+  border-bottom: 0 !important;
+}
+
+body.home-page .dashboard-table--areas.area-table--grouped .area-reading-group-row[data-area-group="la"] > th {
+  border-top: 1.5px solid var(--area-group-border);
+}
+
+/* Preserve normal wrapping. Only a residual single-word overflow is allowed to
+   reduce that individual area name. */
+body.home-page .dashboard-table--areas .area-reading-name.area-reading-name--fit-90 {
+  font-size: 90% !important;
+}
+
+body.home-page .dashboard-table--areas .area-reading-name.area-reading-name--fit-85 {
+  font-size: 85% !important;
+}
+
+body.home-page .dashboard-table--areas .area-reading-name.area-reading-name--fit-80 {
+  font-size: 80% !important;
+}
+
+body.home-page .dashboard-table--areas .area-reading-name.area-reading-name--emergency-wrap {
+  overflow-wrap: anywhere !important;
+}
+
+/* Homepage network table overflow sequence. The permanent controller applies
+   these classes after measuring the rendered table against its wrapper. */
+body.home-page .dashboard-table--networks {
+  width: 100% !important;
+  min-width: 0 !important;
+  table-layout: auto;
+}
+
+body.home-page .dashboard-table--networks tbody th[scope="row"] {
+  white-space: nowrap;
+}
+
+body.home-page .dashboard-table--networks.is-network-name-wrap tbody th[scope="row"],
+body.home-page .dashboard-table--networks tbody th.network-summary-label-split {
+  white-space: normal !important;
+}
+
+body.home-page .dashboard-table--networks th:nth-child(2),
+body.home-page .dashboard-table--networks td:nth-child(2) {
+  width: 1%;
+  white-space: nowrap;
+}
+
+body.home-page .dashboard-table--networks td:nth-child(2) time {
+  white-space: nowrap;
+}
+
+body.home-page .dashboard-table--networks.is-network-updated-hidden th:nth-child(2),
+body.home-page .dashboard-table--networks.is-network-updated-hidden td:nth-child(2) {
+  display: none !important;
+}

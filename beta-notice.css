@@ -1,0 +1,117 @@
+.ukaq-beta-notice-mount {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ukaq-beta-notice {
+  box-sizing: border-box;
+  color: #fff;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+.ukaq-beta-notice--expanded {
+  display: grid;
+  gap: 7px;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(180, 48, 48, 0.82);
+  box-shadow: 0 4px 14px rgba(16, 24, 34, 0.13);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 19px;
+}
+
+.ukaq-beta-notice__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ukaq-beta-notice__title {
+  font-weight: 800;
+}
+
+.ukaq-beta-notice__body {
+  max-width: none;
+}
+
+.ukaq-beta-notice a {
+  color: #fff;
+  font-weight: 800;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+.ukaq-beta-notice a:hover,
+.ukaq-beta-notice a:focus-visible {
+  color: #fff;
+  text-decoration-thickness: 2px;
+}
+
+.ukaq-beta-notice__dismiss,
+.ukaq-beta-notice__pill {
+  appearance: none;
+  border: 1px solid rgba(16, 24, 34, 0.16);
+  border-radius: 999px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 12px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.ukaq-beta-notice__dismiss {
+  flex: 0 0 auto;
+  padding: 7px 11px;
+  background: #fff;
+  color: #1b2a38;
+}
+
+.ukaq-beta-notice__pill {
+  display: inline-flex;
+  align-items: center;
+  width: auto;
+  padding: 8px 12px;
+  background: rgba(180, 48, 48, 0.82);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(16, 24, 34, 0.12);
+}
+
+.ukaq-beta-notice__dismiss:hover,
+.ukaq-beta-notice__pill:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(16, 24, 34, 0.16);
+  border-color: rgba(180, 48, 48, 0.9);
+}
+
+.ukaq-beta-notice__dismiss:active,
+.ukaq-beta-notice__pill:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.ukaq-beta-notice__dismiss:focus-visible,
+.ukaq-beta-notice__pill:focus-visible {
+  outline: 3px solid rgba(60, 120, 172, 0.45);
+  outline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  .ukaq-beta-notice--expanded {
+    padding: 11px 13px;
+    font-size: 13px;
+    line-height: 18px;
+  }
+}
+
+.home-main > .ukaq-beta-notice-mount {
+  margin-bottom: -10px;
+}
+
+main > header + .ukaq-beta-notice-mount {
+  margin-bottom: 16px;
+}
