@@ -340,6 +340,7 @@
 
       .homepage-media-carousel-title {
         display: -webkit-box;
+        overflow-wrap: anywhere; /* Emergency break for an overlong compound. */
         margin: 0;
         overflow: hidden;
         color: #fff;
@@ -2541,6 +2542,7 @@
   <script src="/shared/domain/networks.js"></script>
   <script src="/shared/data/network-catalog.js"></script>
   <script src="/shared/auth/uk-aq-cache-auth.js"></script>
+  <script src="/shared/domain/canonical-current-rows.js"></script>
   <script src="/dashboard.js"></script>
   <script>
     (() => {

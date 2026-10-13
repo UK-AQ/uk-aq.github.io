@@ -69,8 +69,9 @@ body #ukaq-site-footer {
 }
 
 #ukaq-site-footer .ukaq-site-footer-sources {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
@@ -81,22 +82,8 @@ body #ukaq-site-footer {
   display: none;
 }
 
-@media (min-width: 1001px) {
-  #ukaq-site-footer .ukaq-site-footer-sources[data-source-count="1"] {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  #ukaq-site-footer .ukaq-site-footer-sources[data-source-count="2"] {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  #ukaq-site-footer .ukaq-site-footer-sources[data-source-count="3"] {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
 #ukaq-site-footer .ukaq-site-footer-source {
-  position: relative;
+  flex: 1 1 250px;
   min-width: 0;
   padding: 10px 18px 11px;
   display: flex;
@@ -107,20 +94,8 @@ body #ukaq-site-footer {
   box-sizing: border-box;
   text-align: left;
   overflow: hidden;
-}
-
-#ukaq-site-footer .ukaq-site-footer-source + .ukaq-site-footer-source {
-  border-left: 0;
-}
-
-#ukaq-site-footer .ukaq-site-footer-source + .ukaq-site-footer-source::before {
-  content: '';
-  position: absolute;
-  top: 11px;
-  bottom: 11px;
-  left: 0;
-  width: 1px;
-  background: #e1e3e6;
+  border-right: 1px solid #e1e3e6;
+  border-bottom: 1px solid #e1e3e6;
 }
 
 #ukaq-site-footer .ukaq-site-footer-mark {
@@ -206,6 +181,98 @@ body #ukaq-site-footer {
   border-radius: 3px;
 }
 
+/* The official box is wider than a logo source but participates in the same
+ * wrapping flex layout instead of claiming a dedicated footer row. */
+#ukaq-site-footer .ukaq-site-footer-source--official {
+  flex-basis: 500px;
+  max-width: 720px;
+  padding-top: 8px;
+  padding-bottom: 9px;
+  gap: 6px;
+}
+
+#ukaq-site-footer .ukaq-site-footer-source--official .ukaq-site-footer-copy {
+  font-size: 13px;
+}
+
+#ukaq-site-footer .ukaq-site-footer-official-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  min-width: 0;
+}
+
+#ukaq-site-footer .ukaq-site-footer-official-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 12px;
+  row-gap: 5px;
+  min-width: 0;
+}
+
+#ukaq-site-footer .ukaq-site-footer-official-row .ukaq-site-footer-mark {
+  flex: 0 1 auto;
+  width: auto;
+  min-height: 0;
+}
+
+#ukaq-site-footer .ukaq-site-footer-official-row .ukaq-site-footer-gov-pill {
+  flex: 0 0 110px;
+  box-sizing: border-box;
+  width: 110px;
+  max-width: 100%;
+  min-height: 27px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+#ukaq-site-footer .ukaq-site-footer-official-row .ukaq-site-footer-copy {
+  flex: 1 1 210px;
+  width: auto;
+  min-width: 0;
+}
+
+#ukaq-site-footer .ukaq-site-footer-source--official .ukaq-site-footer-copy a {
+  text-decoration-line: underline;
+}
+
+#ukaq-site-footer .ukaq-site-footer-attribution-source {
+  white-space: nowrap;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+/* The NAEI page keeps the UK AQ version and legal attribution as two compact sections. */
+body[data-page-slug="naei-data"] #ukaq-site-footer .ukaq-site-footer-meta {
+  padding: 5px 12px;
+}
+
+body[data-page-slug="naei-data"] #ukaq-site-footer .ukaq-site-footer-sources {
+  display: block;
+}
+
+body[data-page-slug="naei-data"] #ukaq-site-footer .ukaq-site-footer-source {
+  display: block;
+  padding: 6px 12px;
+  border-right: 0;
+  text-align: center;
+}
+
+body[data-page-slug="naei-data"] #ukaq-site-footer .ukaq-site-footer-copy {
+  text-align: center;
+  overflow-wrap: normal;
+}
+
+/* Last-resort safeguard only for viewports narrower than the longest source URL. */
+@media (max-width: 280px) {
+  #ukaq-site-footer .ukaq-site-footer-attribution-source {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+}
+
 /*
  * The full-screen Sensor Map occupies exactly one viewport before the footer.
  * flow-root keeps the footer's 100vh spacer inside the body instead of letting
@@ -239,43 +306,18 @@ body.ukaq-site-footer-after-viewport #ukaq-site-footer {
   margin-top: 100vh;
 }
 
-@media (max-width: 1000px) {
-  #ukaq-site-footer .ukaq-site-footer-sources {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  #ukaq-site-footer .ukaq-site-footer-sources[data-source-count="1"] {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  #ukaq-site-footer .ukaq-site-footer-source:nth-child(3)::before {
-    display: none;
-  }
-
-  #ukaq-site-footer .ukaq-site-footer-source:nth-child(n + 3) {
-    border-top: 1px solid #e1e3e6;
-  }
-}
-
 @media (max-width: 620px) {
   #ukaq-site-footer .ukaq-site-footer-meta {
     padding: 8px 14px;
   }
 
-  #ukaq-site-footer .ukaq-site-footer-sources {
-    grid-template-columns: 1fr;
-  }
-
   #ukaq-site-footer .ukaq-site-footer-source {
+    flex-basis: 100%;
     padding: 10px 14px 11px;
   }
 
-  #ukaq-site-footer .ukaq-site-footer-source + .ukaq-site-footer-source::before {
-    display: none;
-  }
-
-  #ukaq-site-footer .ukaq-site-footer-source + .ukaq-site-footer-source {
-    border-top: 1px solid #e1e3e6;
+  #ukaq-site-footer .ukaq-site-footer-source--official {
+    max-width: none;
   }
 }
 

@@ -236,16 +236,20 @@ function initHexMapSearch(root) {
   }
 
   function switchToUkTab() {
+    if (getActiveTab() === "uk") return;
     if (window.mapTabController?.switchToUk) {
-      window.mapTabController.switchToUk({ updateUrl: true, push: false });
+      window.mapTabController.switchToUk({ updateUrl: true, push: true });
       return;
     }
     document.getElementById("tab-uk")?.click();
   }
 
   function switchToCrTab(region) {
+    const currentRegion = String(window.crMap?.getRegion?.() || "").trim().toLowerCase();
+    const requestedRegion = String(region || "").trim().toLowerCase();
+    if (getActiveTab() === "cr" && (!requestedRegion || requestedRegion === currentRegion)) return;
     if (window.mapTabController?.switchToCr) {
-      window.mapTabController.switchToCr(region, { updateUrl: true, push: false });
+      window.mapTabController.switchToCr(region, { updateUrl: true, push: true });
       return;
     }
     document.getElementById("tab-cr")?.click();

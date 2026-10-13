@@ -205,6 +205,7 @@
 
     const backButtons = Array.from(root.document.querySelectorAll("[data-chart-back-to-map]"));
     const rangeSelect = root.document.getElementById("hex-chart-window-toolbar");
+    const CHART_AUTO_REFRESH_MS = 60 * 1000;
     const narrowChipLayoutQuery = typeof root.matchMedia === "function"
       ? root.matchMedia("(max-width: 767px)")
       : null;
@@ -234,6 +235,9 @@
     };
     let chipIdentityFrame = null;
     let chipMeasureContext = null;
+    let chartRefreshTimer = null;
+    let chartRefreshInFlight = null;
+    let chartWasHidden = false;
     const chipIdentityResizeObserver = typeof root.ResizeObserver === "function"
       ? new root.ResizeObserver(() => scheduleChipNetworkIdentity())
       : null;
@@ -248,6 +252,47 @@
     function selectedEntries() {
       const visible = new Map(state.visibleEntries.map((entry) => [entry.station_id, entry]));
       return Array.from(state.selectedIds).map((id) => visible.get(id) || state.retainedEntries.get(id)).filter(Boolean);
+    }
+
+    function isChartVisible() {
+      const mapKey = chartMapKey();
+      if (!mapKey || !isLifecycleMounted(mapKey) || root.document?.hidden) return false;
+      const panel = domByMap[mapKey]?.panel;
+      const tabPanel = root.document.getElementById(`tab-panel-${mapKey}`);
+      return Boolean(panel && !panel.hidden && !tabPanel?.hidden);
+    }
+
+    function clearChartRefreshTimer() {
+      if (chartRefreshTimer !== null) {
+        root.clearInterval?.(chartRefreshTimer);
+        chartRefreshTimer = null;
+      }
+    }
+
+    function startChartRefreshTimer() {
+      clearChartRefreshTimer();
+      if (!isChartVisible() || typeof root.setInterval !== "function") return;
+      chartRefreshTimer = root.setInterval(() => {
+        if (isChartVisible()) void refresh().catch(() => {});
+      }, CHART_AUTO_REFRESH_MS);
+    }
+
+    function syncChartPollingOnVisibility() {
+      if (!isLifecycleMounted()) {
+        clearChartRefreshTimer();
+        chartWasHidden = false;
+        return;
+      }
+      if (!isChartVisible()) {
+        clearChartRefreshTimer();
+        chartWasHidden = true;
+        return;
+      }
+      startChartRefreshTimer();
+      if (chartWasHidden) {
+        chartWasHidden = false;
+        void refresh().catch(() => {});
+      }
     }
 
     function scheduleChipNetworkIdentity() {
@@ -681,11 +726,13 @@
       const context = currentContext(mapKey);
       const identity = contextIdentity(mapKey, context);
       if (!identity) return false;
+      const visibleEntries = (context.entries || []).map((entry) => normalizeEntry(entry, context)).filter(Boolean);
+      if (!visibleEntries.length) return false;
       exit({ refreshSensorPanelGeometry: false });
       state.lifecycleMounted = true;
       state.sessionIdentity = identity;
-      state.rangeLabel = "24h";
-      state.visibleEntries = (context.entries || []).map((entry) => normalizeEntry(entry, context)).filter(Boolean);
+      state.rangeLabel = normalizeRangeLabel(options.initialRange || options.chartRange || "24h");
+      state.visibleEntries = visibleEntries;
       const requested = String(options.initialSensorId ?? options.initialStationId ?? "").trim();
       const initial = state.visibleEntries.find((entry) => entry.station_id === requested) || state.visibleEntries[0] || null;
       state.selectedIds = new Set(initial ? [initial.station_id] : []);
@@ -693,17 +740,24 @@
       state.aqiSourceId = initial?.station_id || null;
       if (rangeSelect) rangeSelect.value = state.rangeLabel;
       pageMode.enterChart(mapKey);
+      root.dispatchEvent(new CustomEvent("hexchartrangechange", {
+        detail: { range: state.rangeLabel, source: options.updateUrl === false ? "url" : "chart-entry" },
+      }));
       syncChartSelectionTables();
       scheduleSensorPanelGeometryRefresh(mapKey);
       createController(mapKey);
       void state.controller.setRange(resolveRange(state.rangeLabel, selectedEntries()));
       state.pollutantAdapter.sync({ ...context, entries: state.visibleEntries }, context.dataStatus);
       root.UkAqHexMapMobileMapLayout?.frameChart?.(mapKey);
+      chartWasHidden = !isChartVisible();
+      startChartRefreshTimer();
       return true;
     }
 
     function exit(options = {}) {
       const previousMapKey = chartMapKey();
+      clearChartRefreshTimer();
+      chartWasHidden = false;
       root.UkAqHexMapMobileMapLayout?.cancelViewportFrame?.();
       state.pollutantAdapter?.destroy?.();
       state.pollutantContextController?.destroy?.();
@@ -809,13 +863,25 @@
       return true;
     }
 
-    async function refresh() {
-      if (!isLifecycleMounted()) return;
-      await mapAdapter()?.refreshForChartMode?.();
-      const pollutant = domain.normalizePollutant(currentContext()?.pollutant);
-      if (pollutant && pollutant === state.pollutantContextController?.renderedPollutant) {
-        await state.controller?.setRange(resolveRange(state.rangeLabel, selectedEntries()));
-      }
+    function refresh() {
+      if (!isLifecycleMounted()) return Promise.resolve(null);
+      if (chartRefreshInFlight) return chartRefreshInFlight;
+      const mapKey = chartMapKey();
+      const sessionIdentity = state.sessionIdentity;
+      const refreshPromise = (async () => {
+        await mapAdapter(mapKey)?.refreshForChartMode?.();
+        if (!isLifecycleMounted(mapKey) || state.sessionIdentity !== sessionIdentity) return null;
+        const pollutant = domain.normalizePollutant(currentContext(mapKey)?.pollutant);
+        if (pollutant && pollutant === state.pollutantContextController?.renderedPollutant) {
+          return state.controller?.setRange(resolveRange(state.rangeLabel, selectedEntries()));
+        }
+        return null;
+      })();
+      const trackedPromise = refreshPromise.finally(() => {
+        if (chartRefreshInFlight === trackedPromise) chartRefreshInFlight = null;
+      });
+      chartRefreshInFlight = trackedPromise;
+      return trackedPromise;
     }
 
     rangeSelect?.addEventListener("change", () => {
@@ -823,8 +889,12 @@
       state.rangeLabel = normalizeRangeLabel(rangeSelect.value);
       rangeSelect.value = state.rangeLabel;
       void state.controller?.setRange(resolveRange(state.rangeLabel, selectedEntries()));
+      root.dispatchEvent(new CustomEvent("hexchartrangechange", {
+        detail: { range: state.rangeLabel, source: "range-control" },
+      }));
     });
     backButtons.forEach((button) => button.addEventListener("click", exit));
+    root.document.addEventListener("visibilitychange", syncChartPollingOnVisibility);
     root.addEventListener("resize", () => {
       if (isLifecycleMounted()) {
         state.controller?.resize({});
@@ -864,7 +934,9 @@
       isSensorSelected: (mapKey = null, id = "") => Boolean(pageMode.isChartMode(mapKey) && isLifecycleMounted(mapKey) && state.selectedIds.has(String(id))),
       getSelectedSensorIds: (mapKey = null) => pageMode.isChartMode(mapKey) && isLifecycleMounted(mapKey) ? Array.from(state.selectedIds) : [],
       getSelectedSensorIndex: (mapKey = null, id = "") => pageMode.isChartMode(mapKey) && isLifecycleMounted(mapKey) ? Array.from(state.selectedIds).indexOf(String(id)) : -1,
+      getRangeLabel: () => state.rangeLabel,
     });
+    root.dispatchEvent(new CustomEvent("hexchartadapterready"));
     return root.hexChartMode;
   }
 

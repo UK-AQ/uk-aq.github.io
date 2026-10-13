@@ -301,11 +301,13 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
     <script src="/shared/domain/pollutants.js"></script>
+    <script src="/shared/domain/canonical-current-rows.js"></script>
     <script src="/shared/auth/uk-aq-cache-auth.js"></script>
     <script>
       (() => {
         const pollutantDomain = window.UkAqPollutants;
-        if (!pollutantDomain?.definitions) {
+        const canonicalRows = window.UkAqCanonicalCurrentRows;
+        if (!pollutantDomain?.definitions || !canonicalRows?.groupCanonicalRows) {
           throw new Error("UK AQ pollutant domain must load before the Sensor Map.");
         }
 
@@ -661,6 +663,10 @@
         }
 
         function getNetworkLabel(row) {
+          const canonicalLabel = canonicalRows.formatCanonicalNetworkLabel(row);
+          if (canonicalLabel || Array.isArray(row?.site_networks)) {
+            return canonicalLabel || "Unknown";
+          }
           const direct = normalizeText(row?.network_name);
           if (direct) {
             return direct;
@@ -687,7 +693,7 @@
         }
 
         function getStationName(row) {
-          return normalizeText(
+          return canonicalRows.resolveCanonicalStationName(row, null) || normalizeText(
             row?.display_name
               || row?.station_name
               || row?.station_label
@@ -717,6 +723,8 @@
             stationName: stationName === "Unknown station" ? stationLabel : stationName,
             stationLabel,
             network: getNetworkLabel(row),
+            stationNameIsCanonical: Boolean(normalizeText(row?.canonical_station_label)),
+            networkIsCanonical: Array.isArray(row?.site_networks),
           };
         }
 
@@ -735,6 +743,8 @@
             stationName: summary.stationName,
             stationLabel: summary.stationLabel,
             network: summary.network,
+            stationNameIsCanonical: summary.stationNameIsCanonical,
+            networkIsCanonical: summary.networkIsCanonical,
             lat: coords ? coords.lat : null,
             lon: coords ? coords.lon : null,
             latestReadings: new Map(),
@@ -744,14 +754,22 @@
         }
 
         function mergeReadingIntoStation(targetStation, sourceStation) {
-          if (targetStation.stationName === "Unknown station" && sourceStation.stationName !== "Unknown station") {
+          if (
+            sourceStation.stationNameIsCanonical
+            || (targetStation.stationName === "Unknown station" && sourceStation.stationName !== "Unknown station")
+          ) {
             targetStation.stationName = sourceStation.stationName;
+            targetStation.stationNameIsCanonical = sourceStation.stationNameIsCanonical;
           }
           if (!targetStation.stationLabel || targetStation.stationLabel === "Unknown station") {
             targetStation.stationLabel = sourceStation.stationLabel;
           }
-          if (targetStation.network === "Unknown" && sourceStation.network !== "Unknown") {
+          if (
+            sourceStation.networkIsCanonical
+            || (targetStation.network === "Unknown" && sourceStation.network !== "Unknown")
+          ) {
             targetStation.network = sourceStation.network;
+            targetStation.networkIsCanonical = sourceStation.networkIsCanonical;
           }
           sourceStation.latestReadings.forEach((reading, pollutant) => {
             const existing = targetStation.latestReadings.get(pollutant);
@@ -781,12 +799,27 @@
         function groupStationRows(rows) {
           const grouped = new Map();
           const safeRows = Array.isArray(rows) ? rows : [];
+          const rowsByPollutant = new Map();
 
           safeRows.forEach((row) => {
+            const pollutant = getPollutantLabel(row);
+            const pollutantRows = rowsByPollutant.get(pollutant) || [];
+            pollutantRows.push(row);
+            rowsByPollutant.set(pollutant, pollutantRows);
+          });
+
+          const representativeRows = [];
+          rowsByPollutant.forEach((pollutantRows) => {
+            canonicalRows.groupCanonicalRows(pollutantRows, {
+              resolveTimestamp: rowObservedAt,
+            }).forEach((entry) => representativeRows.push(entry.row));
+          });
+
+          representativeRows.forEach((row, index) => {
             const summary = getStationSummary(row, false);
             const coords = extractCoordinatesFromRow(row);
             const fallbackKey = `${summary.network}::${summary.stationLabel}::${coords ? `${coords.lat.toFixed(5)},${coords.lon.toFixed(5)}` : "no-coords"}`;
-            const key = summary.stationId ? `id:${summary.stationId}` : fallbackKey;
+            const key = canonicalRows.resolveCanonicalSiteKey(row, index) || fallbackKey;
 
             if (!grouped.has(key)) {
               grouped.set(key, makeStationRecord(summary, coords, "reading"));
