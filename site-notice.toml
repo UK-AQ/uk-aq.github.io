@@ -1,0 +1,25 @@
+# Editorial configuration; publish complete documents through the notice workflow.
+# Disabled initially: set reviewed wording before enabling any notice.
+[site_notice]
+enabled = false
+message = """
+GOV.UK AURN and Welsh AQN are experiencing a data service outage, and their air quality readings are not currently being updated.
+"""
+
+[network_notices.gov_uk_aurn]
+enabled = false
+message = """
+This network is experiencing a data service outage, and its air quality readings are not currently being updated.
+"""
+
+[network_notices.openaq]
+enabled = false
+
+[network_notices.breathelondon]
+enabled = false
+
+[network_notices.waqn]
+enabled = false
+message = """
+This network is experiencing a data service outage, and its air quality readings are not currently being updated.
+"""
