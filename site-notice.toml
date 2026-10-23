@@ -7,7 +7,7 @@ GOV.UK AURN and Welsh AQN are experiencing a data service outage, and their air 
 """
 
 [network_notices.gov_uk_aurn]
-enabled = false
+enabled = true
 message = """
 This network is experiencing a data service outage, and its air quality readings are not currently being updated.
 """
@@ -19,7 +19,7 @@ enabled = false
 enabled = false
 
 [network_notices.waqn]
-enabled = false
+enabled = true
 message = """
 This network is experiencing a data service outage, and its air quality readings are not currently being updated.
 """
