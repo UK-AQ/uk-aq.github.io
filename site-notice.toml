@@ -1,13 +1,13 @@
 # Editorial configuration; publish complete documents through the notice workflow.
 # Disabled initially: set reviewed wording before enabling any notice.
 [site_notice]
-enabled = true
+enabled = false
 message = """
 GOV.UK AURN is experiencing a data service outage, and air quality readings are not currently being updated.
 """
 
 [network_notices.gov_uk_aurn]
-enabled = true
+enabled = false
 message = """
 This network is experiencing a data service outage, and its air quality readings are not currently being updated.
 """
