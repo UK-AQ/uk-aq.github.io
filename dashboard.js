@@ -836,7 +836,8 @@
   function renderNetworks() {
     const body = document.getElementById("network-summary-body");
     body.replaceChildren();
-    networkCatalog.forEach(({ code, label }) => {
+    // This PM2.5/PM10/NO₂ table does not represent the BC/UV-only Black Carbon network.
+    networkCatalog.filter(({ code }) => code !== "black_carbon").forEach(({ code, label }) => {
       const rowEl = document.createElement("tr");
       rowEl.dataset.network = code;
       const heading = document.createElement("th");
