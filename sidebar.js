@@ -162,6 +162,7 @@
       children: [
         { label: 'Hex Map',     iconImg: 'uk-aq-hex-map-sidebar.svg', href: '/hex_map/' },
         { label: 'Sensor Map', iconImg: 'uk-aq-location-pin.svg',       href: '/sensor_map/' },
+        { label: 'Wood Burning', iconImg: 'uk-aq-wood-burning-stove.png', href: '/wood-burning/', className: 'uk-aq-nav-item--stove' },
         { label: 'AQ in the News', iconImg: 'uk-aq-news-sidebar-button.svg', href: '/news/', className: 'uk-aq-nav-item--wordmark uk-aq-nav-item--wordmark-spaced' },
       ],
     },
@@ -554,6 +555,10 @@
       overflow-x: hidden;
       transition: transform var(--uk-aq-ease), width var(--uk-aq-ease);
       font-family: var(--uk-aq-font);
+    }
+    @media (max-width: 767px) {
+      /* Follow mobile browser chrome while retaining the 100vh fallback above. */
+      #uk-aq-sidebar { height: 100dvh; }
     }
 
     body[data-sidebar-state="collapsed"] #uk-aq-sidebar {
@@ -1299,8 +1304,10 @@
         setState(pinnedOpenDesktop || isSidebarChromeHovered() ? EXPANDED : MINI);
         document.body.classList.remove('uk-aq-drawer-open');
       } else if (bp === 'mobile') {
-        setState(DRAWER);
-        document.body.classList.remove('uk-aq-drawer-open');
+        if (getState() !== DRAWER) {
+          setState(DRAWER);
+          document.body.classList.remove('uk-aq-drawer-open');
+        }
       } else if (getState() === MINI || getState() === DRAWER || getState() === COLLAPSED) {
         document.body.classList.remove('uk-aq-drawer-open');
         setState(pinnedOpenDesktop || isSidebarChromeHovered() ? EXPANDED : MINI);
